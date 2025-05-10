@@ -1,0 +1,13 @@
+[package]
+name = "unjust-list"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+description = "List subcommand for the unjust tool"
+repository.workspace = true
+
+[dependencies]
+console = { workspace = true }
+facet = { workspace = true, features = [] }
+facet-args = { workspace = true }
+unjust-core = { workspace = true }

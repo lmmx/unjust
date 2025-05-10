@@ -2,8 +2,9 @@ use console::style;
 use facet::Facet;
 use facet_args::from_slice;
 use std::env;
-use std::process::{self};
-use unjust_core::{ensure_cache_dir, find_justfile, is_first_use, list_justfiles};
+use std::process::exit;
+use unjust_core::{ensure_cache_dir, find_justfile, is_first_use};
+use unjust_list::handle_list_command;
 use which::which;
 
 fn main() {
@@ -11,7 +12,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
         print_usage(&args[0]);
-        process::exit(1);
+        exit(1);
     }
 
     // Convert args to string slices for facet_args
@@ -23,7 +24,7 @@ fn main() {
             Ok(_) => println!("{}", style("Initialized unjust cache directory.").green()),
             Err(e) => {
                 eprintln!("{} {}", style("Error:").red().bold(), e);
-                process::exit(1);
+                exit(1);
             }
         }
     }
@@ -43,7 +44,8 @@ fn main() {
             handle_init_command(command_args);
         }
         "list" => {
-            handle_list_command(command_args);
+            let exit_code = handle_list_command(command_args);
+            exit(exit_code);
         }
         _ => {
             eprintln!(
@@ -52,7 +54,7 @@ fn main() {
                 command
             );
             print_usage(&args[0]);
-            process::exit(1);
+            exit(1);
         }
     }
 }
@@ -63,7 +65,7 @@ fn handle_use_command(args: &[&str]) {
         Ok(args) => args,
         Err(e) => {
             eprintln!("{} {}", style("Error parsing arguments:").red().bold(), e);
-            process::exit(1);
+            exit(1);
         }
     };
 
@@ -72,7 +74,7 @@ fn handle_use_command(args: &[&str]) {
         Some(ref repo) => repo,
         None => {
             eprintln!("{} Repository not specified", style("Error:").red().bold());
-            process::exit(1);
+            exit(1);
         }
     };
 
@@ -85,7 +87,7 @@ fn handle_use_command(args: &[&str]) {
                     "{} 'just' command not found. Please install just: https://github.com/casey/just",
                     style("Error:").red().bold()
                 );
-                process::exit(1);
+                exit(1);
             }
 
             println!(
@@ -111,11 +113,11 @@ fn handle_use_command(args: &[&str]) {
                 style("unjust").green(),
                 style(repo).green()
             );
-            process::exit(1);
+            exit(1);
         }
         Err(e) => {
             eprintln!("{} {}", style("Error:").red().bold(), e);
-            process::exit(1);
+            exit(1);
         }
     }
 }
@@ -126,7 +128,7 @@ fn handle_sync_command(args: &[&str]) {
         Ok(args) => args,
         Err(e) => {
             eprintln!("{} {}", style("Error parsing arguments:").red().bold(), e);
-            process::exit(1);
+            exit(1);
         }
     };
 
@@ -148,7 +150,7 @@ fn handle_init_command(args: &[&str]) {
         Ok(args) => args,
         Err(e) => {
             eprintln!("{} {}", style("Error parsing arguments:").red().bold(), e);
-            process::exit(1);
+            exit(1);
         }
     };
 
@@ -164,47 +166,6 @@ fn handle_init_command(args: &[&str]) {
         println!("Would use template: {}", template);
     } else {
         println!("Would create a basic Justfile");
-    }
-}
-
-fn handle_list_command(args: &[&str]) {
-    // Parse arguments
-    let list_args = match from_slice::<ListArgs>(args) {
-        Ok(args) => args,
-        Err(e) => {
-            eprintln!("{} {}", style("Error parsing arguments:").red().bold(), e);
-            process::exit(1);
-        }
-    };
-
-    match list_justfiles() {
-        Ok(justfiles) => {
-            if justfiles.is_empty() {
-                println!(
-                    "No Justfiles found. Use '{}' to add one.",
-                    style("unjust sync <repo>").green()
-                );
-                return;
-            }
-
-            println!("{} Available Justfiles:", style("Success:").green().bold());
-            for (i, justfile) in justfiles.iter().enumerate() {
-                if list_args.paths {
-                    println!(
-                        "{}. {} ({})",
-                        i + 1,
-                        style(&justfile.repo_name).green(),
-                        justfile.path.display()
-                    );
-                } else {
-                    println!("{}. {}", i + 1, style(&justfile.repo_name).green());
-                }
-            }
-        }
-        Err(e) => {
-            eprintln!("{} {}", style("Error:").red().bold(), e);
-            process::exit(1);
-        }
     }
 }
 
@@ -268,14 +229,6 @@ struct InitArgs {
     /// Template to use (existing Justfile name)
     #[facet(named, short = 't')]
     pub template: Option<String>,
-}
-
-/// Arguments for the "list" command
-#[derive(Facet, Debug)]
-struct ListArgs {
-    /// Show full paths
-    #[facet(named, short = 'p')]
-    pub paths: bool,
 }
 
 #[cfg(test)]
