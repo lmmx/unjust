@@ -12,6 +12,7 @@ facet = { workspace = true, features = [] }
 facet-args = { workspace = true, features = [] }
 unjust-core = { workspace = true }
 unjust-list = { workspace = true }
+unjust-init = { workspace = true }
 which = { workspace = true }
 
 [dev-dependencies]

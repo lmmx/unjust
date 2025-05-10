@@ -4,6 +4,7 @@ use facet_args::from_slice;
 use std::env;
 use std::process::exit;
 use unjust_core::{ensure_cache_dir, find_justfile, is_first_use};
+use unjust_init::handle_init_command;
 use unjust_list::handle_list_command;
 use which::which;
 
@@ -41,7 +42,8 @@ fn main() {
             handle_sync_command(command_args);
         }
         "init" => {
-            handle_init_command(command_args);
+            let exit_code = handle_init_command(command_args);
+            exit(exit_code);
         }
         "list" => {
             let exit_code = handle_list_command(command_args);
@@ -144,31 +146,6 @@ fn handle_sync_command(args: &[&str]) {
     }
 }
 
-fn handle_init_command(args: &[&str]) {
-    // Parse arguments
-    let init_args = match from_slice::<InitArgs>(args) {
-        Ok(args) => args,
-        Err(e) => {
-            eprintln!("{} {}", style("Error parsing arguments:").red().bold(), e);
-            exit(1);
-        }
-    };
-
-    println!(
-        "{} Init command not fully implemented yet",
-        style("Note:").yellow().bold()
-    );
-
-    let name = init_args.name.unwrap();
-    println!("Would initialize new Justfile with name: {}", name);
-
-    if let Some(ref template) = init_args.template {
-        println!("Would use template: {}", template);
-    } else {
-        println!("Would create a basic Justfile");
-    }
-}
-
 fn print_usage(program: &str) {
     eprintln!(
         "{} {}",
@@ -217,18 +194,6 @@ struct SyncArgs<'a> {
     /// Force push to remote repo
     #[facet(named)]
     pub force_push: bool,
-}
-
-/// Arguments for the "init" command
-#[derive(Facet, Debug)]
-struct InitArgs {
-    /// Name for the new Justfile
-    #[facet(positional, default)]
-    pub name: Option<String>,
-
-    /// Template to use (existing Justfile name)
-    #[facet(named, short = 't')]
-    pub template: Option<String>,
 }
 
 #[cfg(test)]

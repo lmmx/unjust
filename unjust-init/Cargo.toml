@@ -1,0 +1,12 @@
+[package]
+name = "unjust-init"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+description = "Init subcommand for the unjust tool"
+repository.workspace = true
+
+[dependencies]
+console = { workspace = true }
+facet = { workspace = true, features = [] }
+facet-args = { workspace = true }

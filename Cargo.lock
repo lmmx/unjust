@@ -603,6 +603,7 @@ dependencies = [
  "temp-env",
  "tempfile",
  "unjust-core",
+ "unjust-init",
  "unjust-list",
  "which",
 ]
@@ -614,6 +615,15 @@ dependencies = [
  "cargo-husky",
  "standard_paths",
  "tempfile",
+]
+
+[[package]]
+name = "unjust-init"
+version = "0.1.0"
+dependencies = [
+ "console",
+ "facet",
+ "facet-args",
 ]
 
 [[package]]
