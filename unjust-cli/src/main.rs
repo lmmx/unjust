@@ -1,5 +1,6 @@
 use console::style;
 use facet::Facet;
+use facet_args::from_slice;
 use std::env;
 use std::process::{self};
 use unjust_core::{ensure_cache_dir, find_justfile, is_first_use, list_justfiles};
@@ -58,7 +59,7 @@ fn main() {
 
 fn handle_use_command(args: &[&str]) {
     // Parse arguments
-    let use_args = match facet_args::from_slice::<UseArgs>(args) {
+    let use_args = match from_slice::<UseArgs>(args) {
         Ok(args) => args,
         Err(e) => {
             eprintln!("{} {}", style("Error parsing arguments:").red().bold(), e);
@@ -121,7 +122,7 @@ fn handle_use_command(args: &[&str]) {
 
 fn handle_sync_command(args: &[&str]) {
     // Parse arguments
-    let sync_args = match facet_args::from_slice::<SyncArgs>(args) {
+    let sync_args = match from_slice::<SyncArgs>(args) {
         Ok(args) => args,
         Err(e) => {
             eprintln!("{} {}", style("Error parsing arguments:").red().bold(), e);
@@ -143,7 +144,7 @@ fn handle_sync_command(args: &[&str]) {
 
 fn handle_init_command(args: &[&str]) {
     // Parse arguments
-    let init_args = match facet_args::from_slice::<InitArgs>(args) {
+    let init_args = match from_slice::<InitArgs>(args) {
         Ok(args) => args,
         Err(e) => {
             eprintln!("{} {}", style("Error parsing arguments:").red().bold(), e);
@@ -156,7 +157,7 @@ fn handle_init_command(args: &[&str]) {
         style("Note:").yellow().bold()
     );
 
-    let name = init_args.name.unwrap_or("default");
+    let name = init_args.name.unwrap();
     println!("Would initialize new Justfile with name: {}", name);
 
     if let Some(ref template) = init_args.template {
@@ -168,7 +169,7 @@ fn handle_init_command(args: &[&str]) {
 
 fn handle_list_command(args: &[&str]) {
     // Parse arguments
-    let list_args = match facet_args::from_slice::<ListArgs>(args) {
+    let list_args = match from_slice::<ListArgs>(args) {
         Ok(args) => args,
         Err(e) => {
             eprintln!("{} {}", style("Error parsing arguments:").red().bold(), e);
@@ -259,14 +260,14 @@ struct SyncArgs<'a> {
 
 /// Arguments for the "init" command
 #[derive(Facet, Debug)]
-struct InitArgs<'a> {
+struct InitArgs {
     /// Name for the new Justfile
-    #[facet(positional)]
-    pub name: Option<&'a str>,
+    #[facet(positional, default)]
+    pub name: Option<String>,
 
     /// Template to use (existing Justfile name)
     #[facet(named, short = 't')]
-    pub template: Option<&'a str>,
+    pub template: Option<String>,
 }
 
 /// Arguments for the "list" command
