@@ -6,6 +6,7 @@
 //! without any CLI-specific code.
 
 use standard_paths::{LocationType, StandardPaths};
+use std::env::var;
 use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
@@ -18,6 +19,12 @@ pub use repository::Repository;
 
 /// Get the cache directory for unjust
 pub fn get_cache_dir() -> Option<PathBuf> {
+    // Check for env var (used in tests)
+    if let Ok(dir) = var("UNJUST_CACHE_DIR") {
+        return Some(PathBuf::from(dir));
+    }
+
+    // Fall back to user cache dir under "$XDG_HOME|$HOME/.cache/"
     let sp = StandardPaths::new("unjust.core", "unjust");
     sp.writable_location(LocationType::AppCacheLocation).ok()
 }
