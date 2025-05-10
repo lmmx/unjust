@@ -1,5 +1,6 @@
 [package]
 name = "unjust-sync"
+publish = false
 edition.workspace = true
 version.workspace = true
 license.workspace = true
