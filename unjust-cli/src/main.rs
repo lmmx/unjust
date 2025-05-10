@@ -1,11 +1,10 @@
 use console::style;
-use facet::Facet;
-use facet_args::from_slice;
 use std::env;
 use std::process::exit;
 use unjust_core::{ensure_cache_dir, is_first_use};
 use unjust_init::handle_init_command;
 use unjust_list::handle_list_command;
+use unjust_sync::handle_sync_command;
 use unjust_use::handle_use_command;
 
 fn main() {
@@ -40,7 +39,8 @@ fn main() {
             exit(exit_code);
         }
         "sync" => {
-            handle_sync_command(command_args);
+            let exit_code = handle_sync_command(command_args);
+            exit(exit_code);
         }
         "init" => {
             let exit_code = handle_init_command(command_args);
@@ -59,28 +59,6 @@ fn main() {
             print_usage(&args[0]);
             exit(1);
         }
-    }
-}
-
-fn handle_sync_command(args: &[&str]) {
-    // Parse arguments
-    let sync_args = match from_slice::<SyncArgs>(args) {
-        Ok(args) => args,
-        Err(e) => {
-            eprintln!("{} {}", style("Error parsing arguments:").red().bold(), e);
-            exit(1);
-        }
-    };
-
-    println!(
-        "{} Sync command not fully implemented yet",
-        style("Note:").yellow().bold()
-    );
-
-    if let Some(ref repo) = sync_args.repo {
-        println!("Would sync repo: {}", repo);
-    } else {
-        println!("Would sync all repos");
     }
 }
 
@@ -105,18 +83,6 @@ fn print_usage(program: &str) {
 }
 
 // Command argument structs using facet
-
-/// Arguments for the "sync" command
-#[derive(Facet, Debug)]
-struct SyncArgs<'a> {
-    /// Repo to sync (if specific)
-    #[facet(positional)]
-    pub repo: Option<&'a str>,
-
-    /// Force push to remote repo
-    #[facet(named)]
-    pub force_push: bool,
-}
 
 #[cfg(test)]
 mod tests {

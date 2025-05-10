@@ -5,6 +5,7 @@ members = [
   "unjust-list",
   "unjust-init",
   "unjust-use",
+  "unjust-sync",
 ]
 resolver = "3"
 
@@ -24,5 +25,6 @@ unjust-core = { version = "0.1.0", path = "unjust-core" }
 unjust-list = { version = "0.1.0", path = "unjust-list" }
 unjust-init = { version = "0.1.0", path = "unjust-init" }
 unjust-use = { version = "0.1.0", path = "unjust-use" }
+unjust-sync = { version = "0.1.0", path = "unjust-sync" }
 which = "7.0.3"
 cargo-husky = { version = "1.5.0", default-features = false }

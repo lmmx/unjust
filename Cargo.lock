@@ -597,14 +597,13 @@ version = "0.1.0"
 dependencies = [
  "assert_cmd",
  "console",
- "facet",
- "facet-args",
  "predicates",
  "temp-env",
  "tempfile",
  "unjust-core",
  "unjust-init",
  "unjust-list",
+ "unjust-sync",
  "unjust-use",
 ]
 
@@ -634,6 +633,15 @@ dependencies = [
  "facet",
  "facet-args",
  "unjust-core",
+]
+
+[[package]]
+name = "unjust-sync"
+version = "0.1.0"
+dependencies = [
+ "console",
+ "facet",
+ "facet-args",
 ]
 
 [[package]]
