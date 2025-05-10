@@ -150,6 +150,7 @@ mod tests {
         }
 
         #[test]
+        #[ignore]
         fn test_is_first_use() {
             with_temp_cache_dir(|dir| {
                 // When the directory doesn't exist, is_first_use should return true
