@@ -605,7 +605,7 @@ dependencies = [
  "unjust-core",
  "unjust-init",
  "unjust-list",
- "which",
+ "unjust-use",
 ]
 
 [[package]]
@@ -634,6 +634,17 @@ dependencies = [
  "facet",
  "facet-args",
  "unjust-core",
+]
+
+[[package]]
+name = "unjust-use"
+version = "0.1.0"
+dependencies = [
+ "console",
+ "facet",
+ "facet-args",
+ "unjust-core",
+ "which",
 ]
 
 [[package]]

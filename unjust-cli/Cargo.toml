@@ -13,7 +13,7 @@ facet-args = { workspace = true, features = [] }
 unjust-core = { workspace = true }
 unjust-list = { workspace = true }
 unjust-init = { workspace = true }
-which = { workspace = true }
+unjust-use = { workspace = true }
 
 [dev-dependencies]
 assert_cmd = { version = "2.0.17", features = ["color", "color-auto"] }

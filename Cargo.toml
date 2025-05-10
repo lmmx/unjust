@@ -1,5 +1,11 @@
 [workspace]
-members = ["unjust-cli", "unjust-core", "unjust-list", "unjust-init"]
+members = [
+  "unjust-cli",
+  "unjust-core",
+  "unjust-list",
+  "unjust-init",
+  "unjust-use",
+]
 resolver = "3"
 
 [workspace.package]
@@ -14,8 +20,9 @@ facet = { version = "0.18.6", default-features = false, features = [] }
 standard_paths = "2.1.0"
 console = "0.15.11"
 facet-args = { version = "0.18.5", default-features = false }
-unjust-core = { version = "0.1.0", path = "/home/louis/dev/unjust/unjust-core" }
-unjust-list = { version = "0.1.0", path = "/home/louis/dev/unjust/unjust-list" }
-unjust-init = { version = "0.1.0", path = "/home/louis/dev/unjust/unjust-init" }
+unjust-core = { version = "0.1.0", path = "unjust-core" }
+unjust-list = { version = "0.1.0", path = "unjust-list" }
+unjust-init = { version = "0.1.0", path = "unjust-init" }
+unjust-use = { version = "0.1.0", path = "unjust-use" }
 which = "7.0.3"
 cargo-husky = { version = "1.5.0", default-features = false }
