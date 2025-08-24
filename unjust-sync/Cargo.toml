@@ -9,5 +9,3 @@ repository.workspace = true
 
 [dependencies]
 console = { workspace = true }
-facet = { workspace = true, features = [] }
-facet-args = { workspace = true }
