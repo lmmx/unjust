@@ -9,9 +9,6 @@ repository.workspace = true
 [dependencies]
 console = { workspace = true }
 unjust-core = { workspace = true }
-unjust-list = { workspace = true }
-unjust-init = { workspace = true }
-unjust-use = { workspace = true }
 unjust-sync = { workspace = true }
 
 [dev-dependencies]
